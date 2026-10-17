@@ -6,7 +6,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator
 
 
 class DomainModel(BaseModel):
@@ -486,6 +486,11 @@ class SubtreeRollup(DomainModel):
     key_topics: list[str] = Field(default_factory=list)
     representative_files: list[Path] = Field(default_factory=list)
 
+    @field_serializer("representative_files", when_used="json")
+    def serialize_representative_files(self, paths: list[Path]) -> list[str]:
+        """Keep repository paths stable in prompts across operating systems."""
+        return [path.as_posix() for path in paths]
+
 
 class HierarchyNodeRecord(DomainModel):
     """Node record for hierarchy graph storage."""
@@ -726,6 +731,11 @@ class IntensiveCorpusSegment(DomainModel):
         ge=0,
         description="Approximate token count for this segment using the project tokenizer.",
     )
+
+    @field_serializer("source_path", when_used="json")
+    def serialize_source_path(self, path: Path) -> str:
+        """Use repository-relative POSIX separators in model-visible evidence."""
+        return path.as_posix()
 
 
 class IntensiveCorpusChunk(DomainModel):
