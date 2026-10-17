@@ -2,13 +2,14 @@
 
 EngLLM is a deterministic repository-analysis toolkit with LLM-assisted tools on top.
 
-The next planned tool family is history-walk documentation generation, which is
-documented in [docs/HISTORY_DOCS.md](docs/HISTORY_DOCS.md).
+History-walk documentation generation is implemented and documented in
+[docs/HISTORY_DOCS.md](docs/HISTORY_DOCS.md).
 
-Today the repo ships three tool namespaces:
+Today the repo ships four tool namespaces:
 - `engllm sdd ...`: generate and update Software Design Description artifacts
 - `engllm ask answer ...`: answer grounded repository questions with citations
 - `engllm repo ...`: shared repository utilities such as diff inspection and index migration
+- `engllm history-docs build`: generate documentation at historical Git checkpoints
 
 ## Quick Start
 
@@ -30,6 +31,7 @@ engllm ask answer --index-path artifacts/workspaces/SDDRAFT_CORE/shared/retrieva
 - `engllm ask interactive`
 - `engllm repo inspect-diff`
 - `engllm repo migrate-index`
+- `engllm history-docs build`
 
 ## Artifact Layout
 
